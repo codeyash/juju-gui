@@ -173,6 +173,9 @@ YUI.add('juju-env-sandbox', function(Y) {
   });
 
   sandboxModule.ClientConnection = ClientConnection;
+  sandboxModule.Facades = [
+    {Name: 'Service', Versions: [2]}
+  ];
 
   /**
   A sandbox Juju environment using the Go API.
@@ -274,6 +277,7 @@ YUI.add('juju-env-sandbox', function(Y) {
     */
     handleAdminLogin: function(data, client, state) {
       data.Error = !state.login(data.Params.AuthTag, data.Params.Password);
+      data.Response = {Facades: sandboxModule.Facades};
       client.receive(data);
     },
 

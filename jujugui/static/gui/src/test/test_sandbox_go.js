@@ -145,6 +145,7 @@ with this program.  If not, see <http://www.gnu.org/licenses/>.
         // Add in the error indicator so the deepEqual is comparing apples to
         // apples.
         data.Error = false;
+        data.Response = {Facades: sandboxModule.Facades};
         assert.deepEqual(Y.JSON.parse(received.data), data);
         assert.isTrue(state.get('authenticated'));
         done();
