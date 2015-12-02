@@ -422,7 +422,8 @@ YUI.add('juju-env-go', function(Y) {
         the facade is not supported.
     */
     supportedFacade: function(name) {
-      var versions = this.get('facades')[name];
+      var facades = this.get('facades') || {};
+      var versions = facades[name];
       if (!versions) {
         return null;
       };
@@ -913,14 +914,14 @@ YUI.add('juju-env-go', function(Y) {
           return;
         }
         if (version !== null) {
-          data = data.Results[0];
+          data = data.Response.Results[0];
         }
         userCallback({
           err: data.Error,
           service_name: serviceName,
           charm_url: charmUrl
         });
-      };
+      }.bind(this, callback, serviceName, charmUrl);
 
       // Build the API call parameters.
       if (constraints) {
@@ -950,7 +951,7 @@ YUI.add('juju-env-go', function(Y) {
           Type: 'Service',
           Request: 'ServicesDeploy',
           Version: version,
-          Params: {'Services': [serviceParams]}
+          Params: {Services: [serviceParams]}
         }, handleDeploy);
         return;
       };
