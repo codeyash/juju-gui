@@ -277,12 +277,12 @@ YUI.add('juju-env-base', function(Y) {
       @method close
     */
     close: function() {
-      if (this.ws) {
-        this.ws.close();
-      }
       if (this.pinger) {
         clearInterval(this.pinger);
         this.pinger = null;
+      }
+      if (this.ws) {
+        this._stopWatching(this.ws.close);
       }
     },
 

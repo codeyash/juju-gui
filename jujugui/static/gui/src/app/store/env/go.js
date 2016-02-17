@@ -189,6 +189,7 @@ YUI.add('juju-env-go', function(Y) {
       // Define the default user name for this environment. It will appear as
       // predefined value in the login mask.
       this.defaultUser = 'admin';
+      this._allWatcherId = null;
       this.on('_rpc_response', this._handleRpcResponse);
     },
 
@@ -340,6 +341,27 @@ YUI.add('juju-env-go', function(Y) {
           this.fire('_rpc_response', data);
         }
       });
+    },
+
+    /**
+      Stop the Juju mega-watcher currently in use.
+
+      @method _stopWatching
+      @param {Function} callback A callable that must be called once the
+        operation is performed.
+      @private
+    */
+    _stopWatching: function(callback) {
+      cb = function() {
+        this._allWatcherId = null;
+        callback();
+      }.bind(this);
+      this._send_rpc({
+        Type: 'AllWatcher',
+        Request: 'Stop',
+        Id: this._allWatcherId,
+        Params: {}
+      }, cb);
     },
 
     /**
